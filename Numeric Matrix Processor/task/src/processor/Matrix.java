@@ -25,13 +25,44 @@ public class Matrix {
         return this.matrix;
     }
 
+    public int getElement(int i, int j) {
+        return this.matrix[i][j];
+    }
+
+    public void setElement(int i, int j, int value) {
+        try {
+            this.matrix[i][j] = value;
+        } catch (Exception e) {
+            System.out.println("Failed to set new element value.");
+        }
+    }
+
     public void setMatrix(int[][] array) {
         this.matrix = Arrays.stream(array).map(int[]::clone).toArray(int[][]::new);
     }
 
-    public boolean hasSameDimensionsOf(Matrix addend) {
-        return this.numOfColumns == addend.getNumOfColumns() &&
-                this.numOfRows == addend.getNumOfRows();
+    public boolean hasSameDimensionsOf(Matrix comparison) {
+        return this.numOfColumns == comparison.getNumOfColumns() &&
+                this.numOfRows == comparison.getNumOfRows();
+    }
+
+    public Matrix add(Matrix addend) {
+        if (!this.hasSameDimensionsOf(addend)) {
+            return null;
+        } else {
+            Matrix sum = new Matrix(this.getNumOfRows(), this.getNumOfColumns());
+
+            int[][] arrayToAdd = addend.getMatrix();
+
+            for (int i = 0; i < this.getNumOfRows(); i++) {
+                for (int j = 0; j < this.getNumOfColumns(); j++) {
+                    sum.setElement(i, j, this.matrix[i][j] + arrayToAdd[i][j]);
+                }
+            }
+
+            return sum;
+        }
+
     }
 
     @Override
